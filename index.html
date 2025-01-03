@@ -5,15 +5,21 @@
 <head>
     <meta charset="UTF-8"> <!-- 设置字符编码为 UTF-8，支持中文字符 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 确保页面在移动设备上适配 -->
-    <title>Kevinludashi的软件收藏</title> <!-- 网页标题 -->
+    <title>Kevinludashi的网址收藏首页</title> <!-- 网页标题 -->
     <link rel="stylesheet" href="styles.css"> <!-- 引入外部样式表 -->
     <style>
         /* 页面基本样式 */
         body, html {
-            height: 100%; /* 确保 body 和 html 的高度为 100% */
-            margin: 0; /* 清除默认的边距 */
-            padding: 0; /* 清除默认的填充 */
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto;  /* 或者删除该行，默认情况下是自动滚动 */
+            position: relative;
+            background: linear-gradient(45deg, #ff0000, #ff6ec7, #ff8a00, #7bdff2, #4caf50);
+            background-size: 600% 600%;
+            animation: gradientAnimation 10s ease infinite;
         }
+
         
         /* 容器样式 */
         .container {
@@ -21,7 +27,7 @@
             min-height: 100vh; /* 容器最小高度为视口高度 */
             margin: 0 auto; /* 自动水平居中 */
             padding: 20px; /* 内边距 */
-            background-color: white; /* 背景颜色为白色 */
+            background-color: rgba(255, 255, 255, 0); /* 设置背景透明 */
             border-radius: 8px; /* 圆角效果 */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
             box-sizing: border-box; /* 包含 padding 和 border 在内的宽高计算 */
@@ -63,7 +69,8 @@
         .tag-button {
             background-color: #007bff; /* 背景颜色 */
             color: white; /* 字体颜色 */
-            border: none; /* 去掉边框 */
+            border: 1px solid #ccc; /* 边框样式 */
+			/* border: none; /* 去掉边框 */
             padding: 8px 16px; /* 内边距 */
             margin: 5px; /* 外边距 */
             border-radius: 4px; /* 边框圆角 */
@@ -76,8 +83,8 @@
         
         /* 网址卡片样式 */
         .url-card {
-            background-color: #f9f9f9; /* 背景颜色 */
-            border: 1px solid #ddd; /* 边框样式 */
+            background-color: rgba(255, 255, 255, 0.7); /* 背景颜色 */
+            border: 1px solid white; /* 边框样式 */
             padding: 10px; /* 内边距 */
             margin: 8px; /* 外边距 */
             border-radius: 8px; /* 边框圆角 */
@@ -201,13 +208,14 @@
 		
 		/* 说明部分样式 */
 		.instructions {
+			border: 1px solid white; /* 边框样式 */
 		    position: fixed;
 			top: 50%; /* 垂直居中 */
 			left: 50%; /* 水平居中 */
 			transform: translate(-50%, -50%); /* 使用 transform 精确居中 */
 			font-size: 16px;
 			color: #333;
-			background-color: #fff;
+			background-color:  rgba(255, 255, 255, 0.9);;
 			padding: 15px;
 			border-radius: 5px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -243,11 +251,61 @@
 			cursor: pointer;
 		}
 		/* 说明部分样式 */
-
+		
+       /* 渐变背景动画 */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 粒子容器 */
+        .particle-container {
+            position: fixed;  /* 使用固定定位 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;  /* 确保粒子不影响页面其他元素 */
+            z-index: 1;
+        }
+        
+        /* 粒子的基础样式 */
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: particleAnimation 3s infinite ease-in-out;
+        }
+        
+        /* 粒子动画 */
+        @keyframes particleAnimation {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(50px, 50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(100px, 100px);
+                opacity: 0;
+            }
     </style>
 </head>
 <body>
-	
+    <!-- 粒子容器 -->
+	<div id="particle-container" class="particle-container"></div>
+
 	<!-- 说明部分 -->
 	<div class="instructions" id="instructions">
 	  <span class="close-btn" id="closeBtn" style="color: red; font-size: 50px;">&times;</span> <!-- 关闭按钮 -->
@@ -262,7 +320,7 @@
 	</div>
 	
     <div class="container">
-        <h1>软件收藏</h1> <!-- 页面主标题 -->
+        <h1 style="color: white;">软件收藏库</h1> <!-- 页面主标题 -->
         <div class="search-container">
             <input type="text" id="search-input" placeholder="搜索网址或标签..." oninput="searchUrls()"> <!-- 搜索框，输入时触发搜索 -->
         </div>
@@ -289,261 +347,261 @@
         // 网址数据，模拟收藏的网址（你可以根据需求自行修改或扩展）
         const urls = [
 			
-			// 网址数据 卡片
-            {
-                title: "截图之最-电脑必装软件",
-                link: "https://pixpin.cn/",
-                description: "电脑必装系列之截图之最，Pixpin截图软件，win、mac双系统可用",
-                tags: ["全部", "#电脑必装软件", "#截图", "#Win", "#Mac"]
-            },
-			
-			// 网址数据 卡片
-            {
-                title: "录屏之最-电脑必装软件",
-                link: "https://obsproject.com/",
-                description: "电脑必装系列之录屏之最，OBS Studio录屏软件，win、mac、linus三系统可用",
-                tags: ["全部", "#电脑必装软件", "#录屏", "#Win", "#Mac", "#linus"]
-            },
-			
-			// 网址数据 卡片
-            {
-                title: "搜索之最-电脑必装软件",
-                link: "https://www.voidtools.com/zh-cn/",
-                description: "电脑必装系列之搜索之最，Everything搜索神器软件，win系统可用",
-                tags: ["全部", "#电脑必装软件", "#搜索", "#Win"]
-            },
-			
-			// 网址数据 卡片
-            {
-                title: "卸载之最-电脑必装软件",
-                link: "https://geekuninstaller.com/",
-                description: "电脑必装系列之卸载之最，GEEK UNINSTALLER卸载神器软件，win系统可用",
-                tags: ["全部", "#电脑必装软件", "#卸载", "#Win"]
-            },
-			
-			// 网址数据 卡片
-			{
-			    title: "win系统增强工具之最-电脑必装软件",
-			    link: "https://apps.microsoft.com/detail/xp89dcgq3k6vld?hl=zh-Hans-CN&gl=US&ocid=pdpshare",
-			    description: "电脑必装系列之win系统增强工具之最，Microsoft PowerToys系统增强工具软件，win系统可用",
-			    tags: ["全部", "#电脑必装软件", "#Win"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "奇迹秀工具箱",
-			    link: "https://www.qijishow.com/down/index.html?ref=pidoutv.com",
-			    description: "软件资源网站",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "绝版资源",
-			    link: "https://www.jbzy.cn/",
-			    description: "软件资源网站",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "软仓",
-			    link: "https://www.ruancang.net/#/?page=0&id=5&_=1702446357615&q=keyshot&type=1",
-			    description: "win系统软件资源网站",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "PS笔刷",
-			    link: "https://psbrushes.net/all_brushes_01.php",
-			    description: "PS笔刷下载",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#素材", "#笔刷"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "五哥素材",
-			    link: "https://www.wugesc.cn/plugins",
-			    description: "各种素材软件下载",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#素材"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "D5素材",
-			    link: "https://d5show.com/",
-			    description: "各种素材软件下载",
-			    tags: ["全部", "#PS", "#美工", "#设计", "#素材"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "seemac",
-			    link: "https://www.seemac.cn/",
-			    description: "MAC游戏及软件下载",
-			    tags: ["全部", "#Mac", "#游戏"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "马克喵 MAC",
-			    link: "https://www.macat.vip/",
-			    description: "MAC软件下载",
-			    tags: ["全部", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "MACapp分享频道",
-			    link: "https://macapp.org.cn/",
-			    description: "MAC软件下载",
-			    tags: ["全部", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "appstorrent 国外MAC软件资源",
-			    link: "https://appstorrent.ru/programs/",
-			    description: "国外知名MAC软件下载站",
-			    tags: ["全部", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "MAC毒",
-			    link: "https://www.macdo.cn/",
-			    description: "MAC软件下载",
-			    tags: ["全部", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "xclient",
-			    link: "https://xclient.info/s/c/free/",
-			    description: "软件下载网站",
-			    tags: ["全部", "#Mac", "#Win"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "MAC软件下载",
-			    link: "https://www.macbl.com/app/new/",
-			    description: "MAC软件下载",
-			    tags: ["全部", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "电视机软件下载集合",
-			    link: "https://home.designshidai.com/7553.html",
-			    description: "（网盘下载www.lanzoui.com/b481564/ 密码a08l（手机版）www.lanzoui.com/b481565/ 密码gtrt（TV版））",
-			    tags: ["全部", "#电视机", "#影视"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "KAZUMI软件",
-			    link: "https://github.com/Predidit/Kazumi/releases",
-			    description: "这是一个github项目地址，Kazumi是一个通过自定义规则实现全网番剧采集、在线观看的软件程序，目前已支持安卓、iOS、Windows客户端，除了采集功能和内容强大外，Kazumi的APP本身也比较简约，没有什么多余的功能，且没有广告。支持弹幕视频、倍速播放、追番时间表等，暂时还没有投屏、影片缓存的功能。Kazumi规则导入,我的-规则管理-右上角+号-从规则仓库导入-启用镜像-打开github镜像开关-重启重启完成后，再次进入从规则仓库导入的界面，就能看到十多个的规则，直接点击安」即可",
-			    tags: ["全部", "#电视机", "#影视"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "沉浸式翻译浏览器插件",
-			    link: "https://immersivetranslate.com/download/",
-			    description: "这是一个网页插件，最好用的网页翻译插件，双语对照",
-			    tags: ["全部", "#Mac", "#Win", "#插件", "#浏览器"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "HBuilderX",
-			    link: "https://www.dcloud.io/",
-			    description: "一个代码编辑软件及运行网站，推荐",
-			    tags: ["全部", "#编程", "#开发者"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "APKMirror",
-			    link: "https://www.apkmirror.com/",
-			    description: "Google应用下载网站，无需魔法",
-			    tags: ["全部", "#google"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "aurora",
-			    link: "https://auroraoss.com/",
-			    description: "Google应用下载网站，需魔法",
-			    tags: ["全部", "#google"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "云萌win系统激活工具",
-			    link: "https://cmwtat.cloudmoe.com/cn.html",
-			    description: "云萌win系统激活工具",
-			    tags: ["全部", "#激活", "#Win"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "TVBOX",
-			    link: "https://github.com/amclubs/iptv-tvbox",
-			    description: "TVBox就是一个功能强大的TV追剧神器，你可以查看目标站点资源的所有分类，包括其所有相关的影片。在目前的版本中，TVBox提供了一个聚合模式，顾名思义，当你点入一个影片时，它会自动搜索聚合展示接口中所有站点相关的影视资源，这样方便你寻找更优质的片源",
-			    tags: ["全部", "#电视机", "#影视"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "顶级手机投屏软件",
-			    link: "https://github.com/Genymobile/scrcpy",
-			    description: "顶级手机投屏软件github原项目仓库，需要命令行投屏，比较复杂",
-			    tags: ["全部", "#投屏", "#Win"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "顶级手机投屏软件2",
-			    link: "https://github.com/barry-ran/QtScrcpy",
-			    description: "顶级手机投屏软件github原项目仓库，同上",
-			    tags: ["全部", "#投屏", "#Win"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "ARC浏览器下载",
-			    link: "https://arc.net/",
-			    description: "Arc浏览器特点包括竖向标签栏、空间概念以组织浏览内容，快速预览网页，分屏显示，以及整合AI功能，旨在提升浏览效率和体验",
-			    tags: ["全部", "#浏览器", "#Win", "#Mac"]
-			},
-			
-			// 网址数据 卡片
-			{
-			    title: "Apeaksoft免费HEIC转换器",
-			    link: "https://www.apeaksoft.com/zh-CN/heic-converter/",
-			    description: "这个工具可以将HEIC照片转换为JPG、JPEG、PNG格式，而且完全免费使用。它支持Windows和Mac操作系统，并且可选地保留HEIC文件的EXIF元数据",
-			    tags: ["全部", "#转换", "#图片转换", "#Mac", "#Win"]
-			},
-
 		// 网址数据 卡片
-			{
-			    title: "MAC端录屏（超级推荐）",
-			    link: "https://screen.studio/",
-			    description: "中文网址https://www.screenstudio.cn/      Screen Studio是一款专业的Mac OS屏幕录制软件，软件特点：Screen Studio旨在制作高质量的屏幕录制视频。它具有以下特点：自动缩放和跟随鼠标点击，使视频更加吸引人。平滑鼠标移动，去除鼠标光标的晃动，提升视频质量。支持自拍摄像头，自动调整摄像头视频的位置和大小。",
-			    tags: ["全部", "#录屏", "#Mac"]
-			},
-
-		// 网址数据 卡片
-			{
-			    title: "FocuSee录屏（超级推荐）",
-			    link: "https://focusee.imobie.com/",
-			    description: "ocuSee 是一款适用于 Windows 和 Mac 的屏幕录制和编辑应用程序，它提供了自动缩放等特色功能，以便在录制屏幕时突出重点内容，功能特点：FocuSee 允许用户录制全屏、自定义区域或窗口，并具有自动缩放效果。录制完成后，用户可以访问视频编辑界面，以增强视频效果。软件还支持以下功能：添加缩放效果：可以手动指导缩放位置或让应用默认自动缩放。自动生成字幕：为视频自动生成字幕，用户可以进行手动调整。调整画布大小：支持不同的视频比例，如 1:1、4:3、16:9 和 9:16，适用于各种平台。背景自定义：可以使用预设图像、纯色或自定义颜色更改视频背景。调整视频样式：包括调整视频内容与画布边缘之间的间距等。",
-			    tags: ["全部", "#录屏", "#Mac", "#Win"]
-			},
+		            {
+		                title: "截图之最-电脑必装软件",
+		                link: "https://pixpin.cn/",
+		                description: "电脑必装系列之截图之最，Pixpin截图软件，win、mac双系统可用",
+		                tags: ["全部", "#电脑必装软件", "#截图", "#Win", "#Mac"]
+		            },
+					
+					// 网址数据 卡片
+		            {
+		                title: "录屏之最-电脑必装软件",
+		                link: "https://obsproject.com/",
+		                description: "电脑必装系列之录屏之最，OBS Studio录屏软件，win、mac、linus三系统可用",
+		                tags: ["全部", "#电脑必装软件", "#录屏", "#Win", "#Mac", "#linus"]
+		            },
+					
+					// 网址数据 卡片
+		            {
+		                title: "搜索之最-电脑必装软件",
+		                link: "https://www.voidtools.com/zh-cn/",
+		                description: "电脑必装系列之搜索之最，Everything搜索神器软件，win系统可用",
+		                tags: ["全部", "#电脑必装软件", "#搜索", "#Win"]
+		            },
+					
+					// 网址数据 卡片
+		            {
+		                title: "卸载之最-电脑必装软件",
+		                link: "https://geekuninstaller.com/",
+		                description: "电脑必装系列之卸载之最，GEEK UNINSTALLER卸载神器软件，win系统可用",
+		                tags: ["全部", "#电脑必装软件", "#卸载", "#Win"]
+		            },
+					
+					// 网址数据 卡片
+					{
+					    title: "win系统增强工具之最-电脑必装软件",
+					    link: "https://apps.microsoft.com/detail/xp89dcgq3k6vld?hl=zh-Hans-CN&gl=US&ocid=pdpshare",
+					    description: "电脑必装系列之win系统增强工具之最，Microsoft PowerToys系统增强工具软件，win系统可用",
+					    tags: ["全部", "#电脑必装软件", "#Win"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "奇迹秀工具箱",
+					    link: "https://www.qijishow.com/down/index.html?ref=pidoutv.com",
+					    description: "软件资源网站",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "绝版资源",
+					    link: "https://www.jbzy.cn/",
+					    description: "软件资源网站",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "软仓",
+					    link: "https://www.ruancang.net/#/?page=0&id=5&_=1702446357615&q=keyshot&type=1",
+					    description: "win系统软件资源网站",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#剪辑", "#插件"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "PS笔刷",
+					    link: "https://psbrushes.net/all_brushes_01.php",
+					    description: "PS笔刷下载",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#素材", "#笔刷"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "五哥素材",
+					    link: "https://www.wugesc.cn/plugins",
+					    description: "各种素材软件下载",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#素材"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "D5素材",
+					    link: "https://d5show.com/",
+					    description: "各种素材软件下载",
+					    tags: ["全部", "#PS", "#美工", "#设计", "#素材"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "seemac",
+					    link: "https://www.seemac.cn/",
+					    description: "MAC游戏及软件下载",
+					    tags: ["全部", "#Mac", "#游戏"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "马克喵 MAC",
+					    link: "https://www.macat.vip/",
+					    description: "MAC软件下载",
+					    tags: ["全部", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "MACapp分享频道",
+					    link: "https://macapp.org.cn/",
+					    description: "MAC软件下载",
+					    tags: ["全部", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "appstorrent 国外MAC软件资源",
+					    link: "https://appstorrent.ru/programs/",
+					    description: "国外知名MAC软件下载站",
+					    tags: ["全部", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "MAC毒",
+					    link: "https://www.macdo.cn/",
+					    description: "MAC软件下载",
+					    tags: ["全部", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "xclient",
+					    link: "https://xclient.info/s/c/free/",
+					    description: "软件下载网站",
+					    tags: ["全部", "#Mac", "#Win"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "MAC软件下载",
+					    link: "https://www.macbl.com/app/new/",
+					    description: "MAC软件下载",
+					    tags: ["全部", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "电视机软件下载集合",
+					    link: "https://home.designshidai.com/7553.html",
+					    description: "（网盘下载www.lanzoui.com/b481564/ 密码a08l（手机版）www.lanzoui.com/b481565/ 密码gtrt（TV版））",
+					    tags: ["全部", "#电视机", "#影视"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "KAZUMI软件",
+					    link: "https://github.com/Predidit/Kazumi/releases",
+					    description: "这是一个github项目地址，Kazumi是一个通过自定义规则实现全网番剧采集、在线观看的软件程序，目前已支持安卓、iOS、Windows客户端，除了采集功能和内容强大外，Kazumi的APP本身也比较简约，没有什么多余的功能，且没有广告。支持弹幕视频、倍速播放、追番时间表等，暂时还没有投屏、影片缓存的功能。Kazumi规则导入,我的-规则管理-右上角+号-从规则仓库导入-启用镜像-打开github镜像开关-重启重启完成后，再次进入从规则仓库导入的界面，就能看到十多个的规则，直接点击安」即可",
+					    tags: ["全部", "#电视机", "#影视"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "沉浸式翻译浏览器插件",
+					    link: "https://immersivetranslate.com/download/",
+					    description: "这是一个网页插件，最好用的网页翻译插件，双语对照",
+					    tags: ["全部", "#Mac", "#Win", "#插件", "#浏览器"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "HBuilderX",
+					    link: "https://www.dcloud.io/",
+					    description: "一个代码编辑软件及运行网站，推荐",
+					    tags: ["全部", "#编程", "#开发者"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "APKMirror",
+					    link: "https://www.apkmirror.com/",
+					    description: "Google应用下载网站，无需魔法",
+					    tags: ["全部", "#google"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "aurora",
+					    link: "https://auroraoss.com/",
+					    description: "Google应用下载网站，需魔法",
+					    tags: ["全部", "#google"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "云萌win系统激活工具",
+					    link: "https://cmwtat.cloudmoe.com/cn.html",
+					    description: "云萌win系统激活工具",
+					    tags: ["全部", "#激活", "#Win"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "TVBOX",
+					    link: "https://github.com/amclubs/iptv-tvbox",
+					    description: "TVBox就是一个功能强大的TV追剧神器，你可以查看目标站点资源的所有分类，包括其所有相关的影片。在目前的版本中，TVBox提供了一个聚合模式，顾名思义，当你点入一个影片时，它会自动搜索聚合展示接口中所有站点相关的影视资源，这样方便你寻找更优质的片源",
+					    tags: ["全部", "#电视机", "#影视"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "顶级手机投屏软件",
+					    link: "https://github.com/Genymobile/scrcpy",
+					    description: "顶级手机投屏软件github原项目仓库，需要命令行投屏，比较复杂",
+					    tags: ["全部", "#投屏", "#Win"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "顶级手机投屏软件2",
+					    link: "https://github.com/barry-ran/QtScrcpy",
+					    description: "顶级手机投屏软件github原项目仓库，同上",
+					    tags: ["全部", "#投屏", "#Win"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "ARC浏览器下载",
+					    link: "https://arc.net/",
+					    description: "Arc浏览器特点包括竖向标签栏、空间概念以组织浏览内容，快速预览网页，分屏显示，以及整合AI功能，旨在提升浏览效率和体验",
+					    tags: ["全部", "#浏览器", "#Win", "#Mac"]
+					},
+					
+					// 网址数据 卡片
+					{
+					    title: "Apeaksoft免费HEIC转换器",
+					    link: "https://www.apeaksoft.com/zh-CN/heic-converter/",
+					    description: "这个工具可以将HEIC照片转换为JPG、JPEG、PNG格式，而且完全免费使用。它支持Windows和Mac操作系统，并且可选地保留HEIC文件的EXIF元数据",
+					    tags: ["全部", "#转换", "#图片转换", "#Mac", "#Win"]
+					},
+		
+				// 网址数据 卡片
+					{
+					    title: "MAC端录屏（超级推荐）",
+					    link: "https://screen.studio/",
+					    description: "中文网址https://www.screenstudio.cn/      Screen Studio是一款专业的Mac OS屏幕录制软件，软件特点：Screen Studio旨在制作高质量的屏幕录制视频。它具有以下特点：自动缩放和跟随鼠标点击，使视频更加吸引人。平滑鼠标移动，去除鼠标光标的晃动，提升视频质量。支持自拍摄像头，自动调整摄像头视频的位置和大小。",
+					    tags: ["全部", "#录屏", "#Mac"]
+					},
+		
+				// 网址数据 卡片
+					{
+					    title: "FocuSee录屏（超级推荐）",
+					    link: "https://focusee.imobie.com/",
+					    description: "ocuSee 是一款适用于 Windows 和 Mac 的屏幕录制和编辑应用程序，它提供了自动缩放等特色功能，以便在录制屏幕时突出重点内容，功能特点：FocuSee 允许用户录制全屏、自定义区域或窗口，并具有自动缩放效果。录制完成后，用户可以访问视频编辑界面，以增强视频效果。软件还支持以下功能：添加缩放效果：可以手动指导缩放位置或让应用默认自动缩放。自动生成字幕：为视频自动生成字幕，用户可以进行手动调整。调整画布大小：支持不同的视频比例，如 1:1、4:3、16:9 和 9:16，适用于各种平台。背景自定义：可以使用预设图像、纯色或自定义颜色更改视频背景。调整视频样式：包括调整视频内容与画布边缘之间的间距等。",
+					    tags: ["全部", "#录屏", "#Mac", "#Win"]
+					},
         ];
 		// 以上网址数据，模拟收藏的网址（你可以根据需求自行修改或扩展）
 		
@@ -632,6 +690,31 @@
 			closeBtn.addEventListener('click', () => {
 			instructions.style.display = 'none'; // 隐藏说明部分
 			});
+			
+            // 创建粒子背景
+			function createParticles() {
+			    const particleContainer = document.getElementById('particle-container');
+			    const particlesCount = 100; // 粒子数量
+			
+			    for (let i = 0; i < particlesCount; i++) {
+			        const particle = document.createElement('div');
+			        particle.classList.add('particle');
+			
+			        // 随机设置粒子的位置
+			        particle.style.top = `${Math.random() * window.innerHeight}px`;
+			        particle.style.left = `${Math.random() * window.innerWidth}px`;
+			
+			        // 随机设置粒子的动画时间
+			        particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+			
+			        // 将粒子添加到容器中
+			        particleContainer.appendChild(particle);
+			    }
+			}
+			
+			// 调用粒子生成函数
+			createParticles();
+			
     </script>
 </body>
 </html>
